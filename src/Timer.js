@@ -1,40 +1,17 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from 'react';
 
-class Timer extends Component {
-  state = {
-    time: 0,
-    color: "#" + Math.floor(Math.random() * 16777215).toString(16)
-  };
+const Timer = () => {
+  const [time, setTime] = useState(0);
 
-  // add your code here
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(prevTime => prevTime + 1);
+    }, 1000);
 
-  render() {
-    const { time, color } = this.state;
-    return (
-      <section className="Timer" style={{ background: color }}>
-        <h1>{time}</h1>
-        <button onClick={this.stopClock}>Stop</button>
-        <aside className="mountText">Mounted</aside>
-        <small onClick={this.handleClose}>X</small>
-      </section>
-    );
-  }
+    return () => clearInterval(interval);
+  }, []);
 
-  //clock functions
-  clockTick = () => {
-    this.setState(prevState => ({
-      time: prevState.time + 1
-    }));
-  };
-
-  stopClock = () => {
-    clearInterval(this.interval);
-  };
-
-  // for the 'x' button,
-  handleClose = () => {
-    this.props.removeTimer(this.props.id);
-  };
-}
+  return <div>Timer: {time}</div>;
+};
 
 export default Timer;
